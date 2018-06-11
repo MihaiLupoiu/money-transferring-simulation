@@ -21,7 +21,7 @@ This builds the binary using an alpine and creates the docker image ready to use
 After that there should be a mihailupoiu/users image. To execute run:
 
 ```bash 
-docker run mihailupoiu/users --rm -p 8080:8080
+docker run --rm -p 8080:8080 mihailupoiu/users 
 ```
 
 # Used:
