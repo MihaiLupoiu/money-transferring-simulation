@@ -10,7 +10,7 @@ function createSeviceImage () {
     local _serviceName=$1
     
     echo -e "Compiling ${_serviceName}\n"
-    docker run --rm -v $GOPATH:/go golang:$alpineVersion sh -c "cd /go/src/github.com/MihaiLupoiu/money-transferring-simulation/services/${_serviceName} && CGO_ENABLED=0 go build -o ${_serviceName}.alpine"
+    docker run --rm -v $GOPATH:/go golang:$alpineVersion sh -c " apk add --no-cache gcc musl-dev && cd /go/src/github.com/MihaiLupoiu/money-transferring-simulation/services/${_serviceName} && go build -o ${_serviceName}.alpine"
     ret=$?
     if [ $ret -ne 0 ]; then
         exit -1
