@@ -15,7 +15,7 @@ func Post(c *gin.Context) {
 	db := InitDb()
 	defer db.Close()
 
-	var user models.Users
+	var user models.User
 	c.Bind(&user)
 
 	if user.Firstname != "" && user.Lastname != "" && user.Mail != "" {
@@ -32,7 +32,7 @@ func GetUsers(c *gin.Context) {
 	db := InitDb()
 	defer db.Close()
 
-	var users []models.Users
+	var users []models.User
 	db.Find(&users)
 	c.JSON(200, users)
 
@@ -44,7 +44,7 @@ func GetUser(c *gin.Context) {
 	defer db.Close()
 
 	id := c.Params.ByName("id")
-	var user models.Users
+	var user models.User
 	db.First(&user, id)
 
 	if user.Id != 0 {
@@ -61,15 +61,15 @@ func Update(c *gin.Context) {
 	defer db.Close()
 
 	id := c.Params.ByName("id")
-	var user models.Users
+	var user models.User
 	db.First(&user, id)
 
 	if user.Firstname != "" && user.Lastname != "" && user.Mail != "" {
 		if user.Id != 0 {
-			var newUser models.Users
+			var newUser models.User
 			c.Bind(&newUser)
 
-			result := models.Users{
+			result := models.User{
 				Id:        user.Id,
 				Firstname: newUser.Firstname,
 				Lastname:  newUser.Lastname,
@@ -93,7 +93,7 @@ func Delete(c *gin.Context) {
 	defer db.Close()
 
 	id := c.Params.ByName("id")
-	var user models.Users
+	var user models.User
 	db.First(&user, id)
 
 	if user.Id != 0 {
@@ -111,7 +111,7 @@ func GetBalance(c *gin.Context) {
 	defer db.Close()
 
 	id := c.Params.ByName("id")
-	var user models.Users
+	var user models.User
 	db.First(&user, id)
 
 	if user.Id != 0 {
@@ -128,7 +128,7 @@ func AddDeposit(c *gin.Context) {
 	defer db.Close()
 
 	id := c.Params.ByName("id")
-	var user models.Users
+	var user models.User
 	db.First(&user, id)
 
 	if user.Id != 0 {
@@ -160,14 +160,14 @@ func Transfer(c *gin.Context) {
 	defer db.Close()
 
 	id := c.Params.ByName("id")
-	var recvUser models.Users
+	var recvUser models.User
 	db.First(&recvUser, id)
 
 	if recvUser.Id != 0 {
 		var transfer models.Transfer
 		c.Bind(&transfer)
 		if transfer.SenderId != 0 && transfer.Amount > 0 {
-			var sender models.Users
+			var sender models.User
 			db.First(&sender, transfer.SenderId)
 			if sender.Id != 0 {
 				if sender.Id == recvUser.Id {

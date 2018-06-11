@@ -17,9 +17,9 @@ func InitDb() *gorm.DB {
 		panic(err)
 	}
 	// Creating the table
-	if !db.HasTable(&models.Users{}) {
-		db.CreateTable(&models.Users{})
-		db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&models.Users{})
+	if !db.HasTable(&models.User{}) {
+		db.CreateTable(&models.User{})
+		db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&models.User{})
 	}
 
 	if !db.HasTable(&models.Transfer{}) {
