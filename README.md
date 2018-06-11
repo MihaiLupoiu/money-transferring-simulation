@@ -1,9 +1,18 @@
 # money-transferring-simulation
 
-To build execute:
+
+
+To build for alpine:
 ```bash 
+dep ensure
 cd ./scripts
 ./services-build.sh
+```
+To build for local:
+```bash 
+dep ensure
+cd ./services/user
+go build .
 ```
 
 This builds the binary using an alpine and creates the docker image ready to use.
@@ -12,7 +21,7 @@ This builds the binary using an alpine and creates the docker image ready to use
 After that there should be a mihailupoiu/users image. To execute run:
 
 ```bash 
-docker run mihailupoiu/users -p 80:8080
+docker run --rm -p 8080:8080 mihailupoiu/users 
 ```
 
 # Used:
