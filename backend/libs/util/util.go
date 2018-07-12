@@ -1,7 +1,7 @@
 package util
 
 import (
-	"github.com/MihaiLupoiu/money-transferring-simulation/models"
+	"github.com/MihaiLupoiu/money-transferring-simulation/backend/models"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
 )

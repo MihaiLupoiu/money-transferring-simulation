@@ -3,9 +3,9 @@ package user
 import (
 	"time"
 
-	. "github.com/MihaiLupoiu/money-transferring-simulation/libs/constants"
-	. "github.com/MihaiLupoiu/money-transferring-simulation/libs/util"
-	"github.com/MihaiLupoiu/money-transferring-simulation/models"
+	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/constants"
+	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/util"
+	"github.com/MihaiLupoiu/money-transferring-simulation/backend/models"
 	"github.com/gin-gonic/gin"
 )
 

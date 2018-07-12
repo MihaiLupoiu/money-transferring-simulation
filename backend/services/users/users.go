@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/MihaiLupoiu/money-transferring-simulation/queries"
+	"github.com/MihaiLupoiu/money-transferring-simulation/backend/queries"
 	"github.com/gin-gonic/gin"
 )
 

@@ -11,7 +11,7 @@ cd ./scripts
 To build for local:
 ```bash 
 dep ensure
-cd ./services/user
+cd ./services/backend/user
 go build .
 ```
 
