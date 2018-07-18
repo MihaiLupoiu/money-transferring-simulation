@@ -2,12 +2,12 @@
 * Instsall and configure Kubectl DONE
 * Instsall and configure helm DONE
 
-* Install and configure CI/CD
+* Install and configure CI/CD ------>> CHANGING to BUILDBOT (Easier to install and use for the purpose of this project.)
 # Reference: https://github.com/kubernetes/charts/tree/master/stable/concourse
 # Command: 
 # helm install --name concourse --set web.service.type=NodePort  stable/concourse
 
-* Configure money-transfer-simulation pypeline
+* Configure money-transfer-simulation pipeline
 
 * Store image in DockerHub
 
