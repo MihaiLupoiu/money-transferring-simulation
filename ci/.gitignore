@@ -1,0 +1,24 @@
+# VirtualEnv
+env
+
+# Buildbot Config
+master.cfg.sample
+state.sqlite
+*.log*
+buildbot.tac
+twistd.pid
+gitpoller-workdir/*
+worker/twistd.hostname
+worker/info/*
+secrets.py.bak
+*.pyc
+.vscode/launch.json
+gitpoller-worker/*
+gitpoller-work/*
+master/gitpoller-work/*
+
+worker/*
+.vscode/settings.json
+vendor/*
+node_modules/*
+package-lock.json

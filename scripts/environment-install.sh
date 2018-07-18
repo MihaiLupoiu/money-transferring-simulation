@@ -29,3 +29,13 @@ sudo mv linux-amd64/helm /usr/local/bin/helm && rm -r linux-amd64 && rm helm*
 if [ $(dep version | wc -l) -eq 0 ]; then
     go get -u -v github.com/golang/dep/cmd/dep && go install github.com/golang/dep/cmd/dep
 fi
+
+
+sudo apt-get install -y jq \
+        build-essential \
+        python-pip \
+        apt-transport-https \
+        ca-certificates \
+        curl 
+
+pip install virtualenv
