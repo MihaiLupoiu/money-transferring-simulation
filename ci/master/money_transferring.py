@@ -50,3 +50,16 @@ money_transferring.addStep(steps.ShellCommand(name="Build Service",
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
+
+
+money_transferring.addStep(steps.ShellCommand(name="Tag new docker image",
+        command=["docker", "tag", "mihailupoiu/users:latest", "myhay/users:latest"],
+        env=go_env,
+        workdir=basic_workdir+'/backend/scripts',
+        haltOnFailure=True))
+
+money_transferring.addStep(steps.ShellCommand(name="Upload new docker image to dockerhub",
+        command=["docker", "push", "myhay/users:latest"],
+        env=go_env,
+        workdir=basic_workdir+'/backend/scripts',
+        haltOnFailure=True))

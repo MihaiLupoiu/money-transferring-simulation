@@ -7,11 +7,16 @@
 # Command: 
 # helm install --name concourse --set web.service.type=NodePort  stable/concourse
 
-* Configure money-transfer-simulation pipeline
+* Configure money-transfer-simulation pipeline DONE
 
-* Store image in DockerHub
+* Store image in DockerHub DONE
 
 * Update new image automatically
+
+helm install --wait --timeout 30 --set image.tag=$tag --set serviceInfo.name=$_serviceName --set service.containerPort=80 --set service.port=$_port --name=web -- $pathDir/../../charts/deployment-service
+
+helm upgrade ${_serviceName} --wait --timeout 30 --set image.repository=$_serviceImageName --set image.tag=$tag --set serviceInfo.name=$_serviceName  -- $pathDir/../../charts/deployment-service
+
 
 * Add bots to make random operations with service
 * Leave bug in code to kill pod.
