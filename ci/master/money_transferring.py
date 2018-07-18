@@ -12,7 +12,7 @@ go_env={
         'PATH': util.Interpolate('/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:/root/go/bin:/%(prop:builddir)s/go/bin')
 }
 
-basic_workdir='go/src/MihaiLupoiu/money-transferring-simulation'
+basic_workdir='go/src/github.com/MihaiLupoiu/money-transferring-simulation'
 
 # check out the source
 money_transferring.addStep(steps.Git(
@@ -23,8 +23,7 @@ money_transferring.addStep(steps.Git(
 	codebase='money-transferring-simulation',
 	workdir=basic_workdir))
 
-# TODO: Chexk if already installed
-
+# TODO: Check if already installed
 money_transferring.addStep(steps.ShellCommand(name="Go get dep",
         command=["go", "get", "-u", "github.com/golang/dep/cmd/dep"],
         env=go_env,
@@ -32,6 +31,7 @@ money_transferring.addStep(steps.ShellCommand(name="Go get dep",
         haltOnFailure=False,
         flunkOnFailure=False))
 
+# TODO: Check if already installed
 money_transferring.addStep(steps.ShellCommand(name="Go install dep",
         command=["go", "install", "github.com/golang/dep/cmd/dep"],
         env=go_env,
@@ -46,8 +46,7 @@ money_transferring.addStep(steps.ShellCommand(name="Ensure backend dependencies"
         haltOnFailure=True))
 
 money_transferring.addStep(steps.ShellCommand(name="Build Service",
-        command=['./services-build.sh'],
+        command=["./services-build.sh"],
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
-
