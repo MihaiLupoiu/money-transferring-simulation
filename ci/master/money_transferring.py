@@ -46,7 +46,7 @@ money_transferring.addStep(steps.ShellCommand(name="Ensure backend dependencies"
         haltOnFailure=True))
 
 money_transferring.addStep(steps.ShellCommand(name="Build Service",
-        command=["./services-build.sh"],
+        command=['./services-build.sh'],
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
