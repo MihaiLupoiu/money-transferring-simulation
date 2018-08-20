@@ -3,7 +3,7 @@ env
 
 # Buildbot Config
 master.cfg.sample
-state.sqlite
+state.sqlite*
 *.log*
 buildbot.tac
 twistd.pid
