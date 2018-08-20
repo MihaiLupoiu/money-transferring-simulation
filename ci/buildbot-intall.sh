@@ -7,5 +7,5 @@ pip install 'buildbot[bundle]'
 
 buildbot create-master ./master
 
-
-buildbot-worker create-worker . localhost worker pass
+mkdir worker
+buildbot-worker create-worker ./worker localhost worker pass
