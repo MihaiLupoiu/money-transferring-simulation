@@ -2,7 +2,7 @@
 
 minikube start \
     --cpus=2 \
-    --memory=4096 \
+    --memory=2048 \
     --v=5 --logtostderr 
 
 sleep 5
@@ -30,7 +30,7 @@ do
 done
 
 # Enable Addons
-minikube addons enable efk 
-minikube addons enable heapster
-minikube addons enable metrics-server
+# minikube addons enable efk 
+# minikube addons enable heapster
+# minikube addons enable metrics-server
 # minikube addons enable ingress
