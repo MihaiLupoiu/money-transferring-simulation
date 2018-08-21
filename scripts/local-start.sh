@@ -4,15 +4,12 @@ minikube start \
     --cpus=2 \
     --memory=4096 \
     --v=5 --logtostderr 
-    
-    
-    # -vm-driver=none \
 
 sleep 5
 
 # Create roles:
 # Fix Dashboar
-kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
+# kubectl create clusterrolebinding add-on-cluster-admin --clusterrole=cluster-admin --serviceaccount=kube-system:default
 
 helm init --history-max 4
 
@@ -26,14 +23,14 @@ do
     fi
 
     if [ $count == $maxRetrys ];then
+        echo "Max retrys reached" maxRetrys
         exit 1
     fi
     let count=$count+1
-    echo $count
 done
 
 # Enable Addons
-# minikube addons enable efk 
+minikube addons enable efk 
 minikube addons enable heapster
+minikube addons enable metrics-server
 # minikube addons enable ingress
-# minikube addons enable registry

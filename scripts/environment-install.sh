@@ -37,12 +37,11 @@ if [ $(uname -v | grep Debian | wc -l) -ne 0 ]; then
     sudo mv ./kubectl /usr/local/bin/kubectl
 
 
-    # TODO: Update to 0.28.2
     echo -e "\n--------------------- Installing last stable version of minikube known ------------------------"
     content=$(curl https://api.github.com/repos/kubernetes/minikube/tags)
     version=$(echo $content | jq -r '.[0] | .name') 
     echo "Last version available ${version}"
-    version=v0.25.2
+    version=v0.28.2
     echo "Installing version ${version}"
     curl -Lo minikube https://storage.googleapis.com/minikube/releases/$version/minikube-linux-amd64 && chmod +x minikube 
     sudo mv minikube /usr/local/bin/
@@ -72,6 +71,8 @@ elif [ $(uname -v | grep Darwin | wc -l) -ne 0 ]; then
 
     brew install kubernetes-cli
     brew cask install docker minikube virtualbox
+    brew install kubernetes-helm
+
 else
     echo "Not a Debian machine. Manual installation required. View script required steps."
 fi
