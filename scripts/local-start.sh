@@ -31,6 +31,6 @@ done
 
 # Enable Addons
 # minikube addons enable efk 
-# minikube addons enable heapster
+minikube addons enable heapster
 # minikube addons enable metrics-server
 # minikube addons enable ingress
