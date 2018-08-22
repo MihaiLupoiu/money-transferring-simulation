@@ -10,7 +10,7 @@ function createSeviceImage () {
     local _serviceName=$1
     
     echo -e "Compiling ${_serviceName}\n"
-    docker run --rm -v $GOPATH:/go myhay/builder:$alpineVersion sh -c "cd /go/src/github.com/MihaiLupoiu/money-transferring-simulation/backend/services/${_serviceName} && CGO_ENABLED=0 GOOS=linux go build -installsuffix nocgo -o ${_serviceName}.alpine"
+    docker run --rm -v $GOPATH:/go myhay/builder:$alpineVersion sh -c "cd /go/src/github.com/MihaiLupoiu/money-transferring-simulation/backend/services/${_serviceName} && CGO_ENABLED=1 GOOS=linux go build -installsuffix nocgo -o ${_serviceName}.alpine"
     ret=$?
     if [ $ret -ne 0 ]; then
         exit -1
