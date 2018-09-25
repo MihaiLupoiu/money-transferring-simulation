@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"math"
 	"os"
 
 	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/constants"
@@ -31,6 +33,7 @@ func main() {
 		v1.DELETE("/users/:id", Delete)
 
 		v1.GET("/kill", Kill)
+		v1.GET("/pi", PiNumber)
 
 		// TODO: split functions in seperate module.
 		v1.GET("/balance/:id", user.GetBalance)
@@ -146,7 +149,33 @@ func Delete(c *gin.Context) {
 }
 
 func Kill(c *gin.Context) {
+	fmt.Println("EXITING BRUTE FORCE!")
 	os.Exit(-1)
 
-	// curl -i -X GET http://localhost:8080/api/v1/users/kill
+	// curl -i -X GET http://localhost:8080/api/v1/kill
+}
+
+func PiNumber(c *gin.Context) {
+
+	fmt.Println("Pi is: ", pi(5000))
+
+	// curl -i -X GET http://localhost:8080/api/v1/kill
+}
+
+// pi launches n goroutines to compute an
+// approximation of pi.
+func pi(n int) float64 {
+	ch := make(chan float64)
+	for k := 0; k <= n; k++ {
+		go term(ch, float64(k))
+	}
+	f := 0.0
+	for k := 0; k <= n; k++ {
+		f += <-ch
+	}
+	return f
+}
+
+func term(ch chan float64, k float64) {
+	ch <- 4 * math.Pow(-1, k) / (2*k + 1)
 }
