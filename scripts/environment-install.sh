@@ -72,6 +72,7 @@ elif [ $(uname -v | grep Darwin | wc -l) -ne 0 ]; then
     brew install kubernetes-cli
     brew cask install docker minikube virtualbox
     brew install kubernetes-helm
+    brew install vegeta
 
 else
     echo "Not a Debian machine. Manual installation required. View script required steps."

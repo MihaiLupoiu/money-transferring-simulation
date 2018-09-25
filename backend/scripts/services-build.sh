@@ -36,9 +36,12 @@ function createSeviceImage () {
 #                                   MAIN
 ##############################################################################
 
-cd $backendDir/services/users
-echo $PWD2
-createSeviceImage "users"
+serviceName=$1
+
+cd $backendDir/services/$serviceName
+echo $PWD
+
+createSeviceImage "${serviceName}"
 
 
 if [ $(docker images -f "dangling=true" -q | wc -l) -ne 0 ]

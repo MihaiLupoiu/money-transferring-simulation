@@ -14,6 +14,24 @@ go_env={
 
 basic_workdir='go/src/github.com/MihaiLupoiu/money-transferring-simulation'
 
+# ==============================================================================
+
+gofmt = steps.ShellCommand(name="go fmt",
+        command=["gofmt", "-l", "models", "queries", "services"],
+        env=go_env,
+        workdir=basic_workdir+'/backend',
+        haltOnFailure=False,
+        flunkOnFailure=False)
+
+govet = steps.ShellCommand(name="go vet",
+        command=["go", "tool", "vet", "-shadow=true", "models/"],
+        env=go_env,
+        workdir=basic_workdir+'/backend',
+        haltOnFailure=False,
+        flunkOnFailure=False)
+
+# ==============================================================================
+
 # check out the source
 money_transferring.addStep(steps.Git(
     repourl=util.Interpolate("%(src:money-transferring-simulation:repository)s"),
@@ -21,7 +39,12 @@ money_transferring.addStep(steps.Git(
 	method='clean',
 	branch=util.Interpolate('%(src:money-transferring-simulation:branch)s'),      
 	codebase='money-transferring-simulation',
-	workdir=basic_workdir))
+	workdir=basic_workdir,
+        getDescription={
+        "always":True,
+        "tags": True,
+        "long": True,
+        "abbrev": 8}))
 
 # TODO: Check if already installed
 money_transferring.addStep(steps.ShellCommand(name="Go get dep",
@@ -45,21 +68,31 @@ money_transferring.addStep(steps.ShellCommand(name="Ensure backend dependencies"
         workdir=basic_workdir+'/backend',
         haltOnFailure=True))
 
+money_transferring.addSteps([gofmt, govet])
+
+
 money_transferring.addStep(steps.ShellCommand(name="Build Service",
-        command=["./services-build.sh"],
+        command=["./services-build.sh", "users"],
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
 
 money_transferring.addStep(steps.ShellCommand(name="Tag new docker image",
-        command=["docker", "tag", "mihailupoiu/users:latest", "myhay/users:latest"],
+        command=util.renderer(lambda props: ["docker", "tag", "mihailupoiu/users:latest", "myhay/users:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
 money_transferring.addStep(steps.ShellCommand(name="Upload new docker image to dockerhub",
-        command=["docker", "push", "myhay/users:latest"],
+        command=util.renderer(lambda props: ["docker", "push", "myhay/users:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
+
+money_transferring.addStep(steps.ShellCommand(name="Deploy new docker image in Kubernetes",
+        command=util.renderer(lambda props: ["./services-deploy.sh", "users", "{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
+        env=go_env,
+        workdir=basic_workdir+'/backend/scripts',
+        haltOnFailure=True))
+
