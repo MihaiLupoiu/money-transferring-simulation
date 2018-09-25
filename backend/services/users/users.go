@@ -1,6 +1,9 @@
 package main
 
 import (
+	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/constants"
+	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/util"
+	"github.com/MihaiLupoiu/money-transferring-simulation/backend/models"
 	"github.com/MihaiLupoiu/money-transferring-simulation/backend/queries"
 	"github.com/gin-gonic/gin"
 )
@@ -19,11 +22,11 @@ func main() {
 
 	v1 := r.Group("api/v1")
 	{
-		v1.POST("/users", user.Post)
-		v1.GET("/users", user.GetUsers)
-		v1.GET("/users/:id", user.GetUser)
-		v1.PUT("/users/:id", user.Update)
-		v1.DELETE("/users/:id", user.Delete)
+		v1.POST("/users", Post)
+		v1.GET("/users", GetUsers)
+		v1.GET("/users/:id", GetUser)
+		v1.PUT("/users/:id", Update)
+		v1.DELETE("/users/:id", Delete)
 
 		// TODO: split functions in seperate module.
 		v1.GET("/balance/:id", user.GetBalance)
@@ -40,3 +43,100 @@ func main() {
 // 	c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 // 	c.Next()
 // }
+
+// TODO: Split DB queries and JSON return values.
+
+func Post(c *gin.Context) {
+	db := InitDb()
+	defer db.Close()
+
+	var user models.User
+	c.Bind(&user)
+
+	if user.Firstname != "" && user.Lastname != "" && user.Mail != "" {
+		db.Create(&user)
+		c.JSON(201, gin.H{"success": user})
+	} else {
+		c.JSON(422, gin.H{"error": ErrorFieldsEmpty})
+	}
+
+	// curl -i -X POST -H "Content-Type: application/json" -d "{ \"firstname\": \"Jhon\", \"lastname\": \"Donals\", \"mail\": \"jd@fake.com\"}" http://localhost:8080/api/v1/users
+}
+
+func GetUsers(c *gin.Context) {
+	db := InitDb()
+	defer db.Close()
+
+	var users []models.User
+	db.Find(&users)
+	c.JSON(200, users)
+
+	// curl -i http://localhost:8080/api/v1/users
+}
+
+func GetUser(c *gin.Context) {
+	db := InitDb()
+	defer db.Close()
+
+	id := c.Params.ByName("id")
+	var user models.User
+	db.First(&user, id)
+
+	if user.Id != 0 {
+		c.JSON(200, user)
+	} else {
+		c.JSON(404, gin.H{"error": ErrorUserNotFound})
+	}
+
+	// curl -i http://localhost:8080/api/v1/users/1
+}
+
+func Update(c *gin.Context) {
+	db := InitDb()
+	defer db.Close()
+
+	id := c.Params.ByName("id")
+	var user models.User
+	db.First(&user, id)
+
+	if user.Firstname != "" && user.Lastname != "" && user.Mail != "" {
+		if user.Id != 0 {
+			var newUser models.User
+			c.Bind(&newUser)
+
+			result := models.User{
+				Id:        user.Id,
+				Firstname: newUser.Firstname,
+				Lastname:  newUser.Lastname,
+				Mail:      newUser.Mail,
+			}
+
+			db.Save(&result)
+			c.JSON(200, gin.H{"success": result})
+		} else {
+			c.JSON(404, gin.H{"error": ErrorUserNotFound})
+		}
+	} else {
+		c.JSON(422, gin.H{"error": ErrorFieldsEmpty})
+	}
+
+	// curl -i -X PUT -H "Content-Type: application/json" -d "{ \"firstname\": \"Thea\", \"lastname\": \"Merlyn\", \"mail\": \"tm@fake.com\" }" http://localhost:8080/api/v1/users/1
+}
+
+func Delete(c *gin.Context) {
+	db := InitDb()
+	defer db.Close()
+
+	id := c.Params.ByName("id")
+	var user models.User
+	db.First(&user, id)
+
+	if user.Id != 0 {
+		db.Delete(&user)
+		c.JSON(200, gin.H{"success": "User #" + id + " deleted"})
+	} else {
+		c.JSON(404, gin.H{"error": ErrorUserNotFound})
+	}
+
+	// curl -i -X DELETE http://localhost:8080/api/v1/users/1
+}
