@@ -10,14 +10,15 @@ serviceInfo:
 image:
   repository: myhay/users
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
+  #pullPolicy: IfNotPresent #  Usual use case.
 
 configMapPath: "config.json"
 
 service:
-  containerPort: 3000
+  containerPort: 8080
   type: NodePort
-  port: 3000
+  port: 30080
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
