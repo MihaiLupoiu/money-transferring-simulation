@@ -6,23 +6,32 @@
 # Reference: https://github.com/kubernetes/charts/tree/master/stable/concourse
 # Command: 
 # helm install --name concourse --set web.service.type=NodePort  stable/concourse
-
-* Configure money-transfer-simulation pipeline DONE
+# * Configure money-transfer-simulation pipeline DONE
 
 * Store image in DockerHub DONE
 
-* Update new image automatically
+* Use Helm to install service. DONE.
+
+# Helm command to meke it work in kubernetes.
+# helm install --name=users -- ../../charts/users
+
+# while :; do; sleep 1; curl -i http://192.168.99.100:30080/api/v1/users/1; done;
 
 helm install --wait --timeout 30 --set image.tag=$tag --set serviceInfo.name=$_serviceName --set service.containerPort=80 --set service.port=$_port --name=web -- $pathDir/../../charts/deployment-service
 
 helm upgrade ${_serviceName} --wait --timeout 30 --set image.repository=$_serviceImageName --set image.tag=$tag --set serviceInfo.name=$_serviceName  -- $pathDir/../../charts/deployment-service
 
+* Split services in user create/autenticate, transference.
+* Testing Services
+* Update new image automatically
 
 * Add bots to make random operations with service
-* Leave bug in code to kill pod.
-* Fix it.
-* Leave bug in code to use 100% CPU.
-* Fix it.
+# For creting users. 
+# curl -i https://randomuser.me/api/\?inc=name,mail,phone
+* Leave bug in code to kill pod. DONE.
+* * Fix it.  DONE.
+* Leave bug in code to use 100% CPU. DONE.
+* * Fix it. DONE.
 
 
 # ------------------------------------------------------------------------------------------
@@ -36,11 +45,12 @@ helm upgrade ${_serviceName} --wait --timeout 30 --set image.repository=$_servic
 # https://meteatamel.wordpress.com/2018/04/24/istio-101-with-minikube/
 
 * Dashboards
-* * Linkerd / Istio
 * * Grafana
-* * EFK
 * * Prometheus
+* * Linkerd / Istio
+* * EFK NOT POSIBLE -> Too much resources required for it to work properlly.
 
 Articles:
 # https://dzone.com/articles/microservices-the-good-the-bad-and-the-ugly
 # https://medium.com/@zahirkoradia/microservices-the-good-the-bad-the-ugly-a2f09248092d
+
