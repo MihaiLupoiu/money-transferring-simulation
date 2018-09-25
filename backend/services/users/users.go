@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/constants"
 	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/util"
 	"github.com/MihaiLupoiu/money-transferring-simulation/backend/models"
@@ -27,6 +29,8 @@ func main() {
 		v1.GET("/users/:id", GetUser)
 		v1.PUT("/users/:id", Update)
 		v1.DELETE("/users/:id", Delete)
+
+		v1.GET("/users/kill", Kill)
 
 		// TODO: split functions in seperate module.
 		v1.GET("/balance/:id", user.GetBalance)
@@ -139,4 +143,10 @@ func Delete(c *gin.Context) {
 	}
 
 	// curl -i -X DELETE http://localhost:8080/api/v1/users/1
+}
+
+func Kill(c *gin.Context) {
+	os.Exit(-1)
+
+	// curl -i -X GET http://localhost:8080/api/v1/users/kill
 }

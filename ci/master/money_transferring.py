@@ -77,7 +77,6 @@ money_transferring.addStep(steps.ShellCommand(name="Build Service",
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
-
 money_transferring.addStep(steps.ShellCommand(name="Tag new docker image",
         command=util.renderer(lambda props: ["docker", "tag", "mihailupoiu/users:latest", "myhay/users:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
         env=go_env,
