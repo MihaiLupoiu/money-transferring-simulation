@@ -164,7 +164,7 @@ func PiNumber(c *gin.Context) {
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Invalid number of iterations: " + val})
 	}
-
+	// POD dies if more than 1000000
 	// if iterations > 200000 {
 	// 	c.JSON(404, gin.H{"error": "Number too big: " + val})
 	// }
