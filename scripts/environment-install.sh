@@ -72,6 +72,7 @@ elif [ $(uname -v | grep Darwin | wc -l) -ne 0 ]; then
     brew install kubernetes-cli
     brew cask install docker minikube virtualbox
     brew install kubernetes-helm
+    brew install jq
     brew install vegeta
 
 else

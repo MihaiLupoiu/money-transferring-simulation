@@ -30,7 +30,7 @@ func main() {
 		v1.PUT("/users/:id", Update)
 		v1.DELETE("/users/:id", Delete)
 
-		v1.GET("/users/kill", Kill)
+		v1.GET("/kill", Kill)
 
 		// TODO: split functions in seperate module.
 		v1.GET("/balance/:id", user.GetBalance)
