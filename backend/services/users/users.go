@@ -156,10 +156,8 @@ func Kill(c *gin.Context) {
 }
 
 func PiNumber(c *gin.Context) {
-
-	fmt.Println("Pi is: ", pi(5000))
-
-	// curl -i -X GET http://localhost:8080/api/v1/kill
+	c.JSON(200, gin.H{"success": "Pi is" + fmt.Sprintf("%.10f", pi(500000))})
+	// curl -i -X GET http://localhost:8080/api/v1/pi
 }
 
 // pi launches n goroutines to compute an
