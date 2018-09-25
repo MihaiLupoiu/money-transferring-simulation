@@ -34,7 +34,7 @@ func main() {
 		v1.DELETE("/users/:id", Delete)
 
 		v1.GET("/kill", Kill)
-		v1.GET("/pi/:decimals", PiNumber)
+		v1.GET("/pi/:iterations", PiNumber)
 
 		// TODO: split functions in seperate module.
 		v1.GET("/balance/:id", user.GetBalance)
@@ -158,13 +158,18 @@ func Kill(c *gin.Context) {
 
 func PiNumber(c *gin.Context) {
 
-	val := c.Params.ByName("decimals")
+	val := c.Params.ByName("iteracions")
 
-	decimals, err := strconv.Atoi(val)
+	iterations, err := strconv.Atoi(val)
 	if err != nil {
-		c.JSON(404, gin.H{"error": "Invalid number: " + val})
+		c.JSON(404, gin.H{"error": "Invalid number of iterations: " + val})
 	}
-	c.JSON(200, gin.H{"success": "Pi is: " + fmt.Sprintf("%.20f", pi(decimals))})
+
+	// if iterations > 200000 {
+	// 	c.JSON(404, gin.H{"error": "Number too big: " + val})
+	// }
+
+	c.JSON(200, gin.H{"success": "Pi is: " + fmt.Sprintf("%.20f", pi(iterations))})
 	// curl -i -X GET http://localhost:8080/api/v1/pi/35000
 }
 
@@ -186,4 +191,5 @@ func pi(n int) float64 {
 
 func term(ch chan float64, k float64) {
 	ch <- 4 * math.Pow(-1, k) / (2*k + 1)
+	defer close(ch)
 }
