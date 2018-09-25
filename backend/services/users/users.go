@@ -156,7 +156,7 @@ func Kill(c *gin.Context) {
 }
 
 func PiNumber(c *gin.Context) {
-	c.JSON(200, gin.H{"success": "Pi is" + fmt.Sprintf("%.10f", pi(10000))})
+	c.JSON(200, gin.H{"success": "Pi is: " + fmt.Sprintf("%.20f", pi(15000))})
 	// curl -i -X GET http://localhost:8080/api/v1/pi
 }
 
@@ -164,7 +164,8 @@ func PiNumber(c *gin.Context) {
 // approximation of pi.
 func pi(n int) float64 {
 	ch := make(chan float64)
-	//defer close(ch)
+	defer close(ch)
+
 	for k := 0; k <= n; k++ {
 		go term(ch, float64(k))
 	}
