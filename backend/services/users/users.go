@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"strconv"
 
 	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/constants"
 	. "github.com/MihaiLupoiu/money-transferring-simulation/backend/libs/util"
@@ -33,7 +34,7 @@ func main() {
 		v1.DELETE("/users/:id", Delete)
 
 		v1.GET("/kill", Kill)
-		v1.GET("/pi", PiNumber)
+		v1.GET("/pi/:decimals", PiNumber)
 
 		// TODO: split functions in seperate module.
 		v1.GET("/balance/:id", user.GetBalance)
@@ -156,8 +157,15 @@ func Kill(c *gin.Context) {
 }
 
 func PiNumber(c *gin.Context) {
-	c.JSON(200, gin.H{"success": "Pi is: " + fmt.Sprintf("%.20f", pi(25000))})
-	// curl -i -X GET http://localhost:8080/api/v1/pi
+
+	val := c.Params.ByName("decimals")
+
+	decimals, err := strconv.Atoi(val)
+	if err != nil {
+		c.JSON(404, gin.H{"error": "Invalid number: " + val})
+	}
+	c.JSON(200, gin.H{"success": "Pi is: " + fmt.Sprintf("%.20f", pi(decimals))})
+	// curl -i -X GET http://localhost:8080/api/v1/pi/35000
 }
 
 // pi launches n goroutines to compute an
