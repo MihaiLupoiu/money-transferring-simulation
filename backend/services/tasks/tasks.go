@@ -86,11 +86,6 @@ func DeleteTask(c *gin.Context) {
 	db.Delete(&task)
 }
 
-// curl -i -X GET -H "Content-Type: application/json" http://192.168.99.100:30081/api/v1/tasks/
-// curl -i -X POST -H "Content-Type: application/json" -d "{\"title\": \"test\",\"created_at\": \"2017-11-13T23:03:28-08:00\", \"completed\": false}" http://192.168.99.100:30081/api/v1/tasks/
-// curl -i -X DELETE -H "Content-Type: application/json" http://192.168.99.100:30081/api/v1/tasks/ID
-// curl -i -X PUT -H "Content-Type: application/json" -d "{\"title\": \"test name changed\", \"completed\": true}" http://192.168.99.100:30081/api/v1/tasks/ID
-
 func Kill(c *gin.Context) {
 	fmt.Println("EXITING BRUTE FORCE!")
 	os.Exit(-1)
@@ -111,31 +106,11 @@ func PiNumber(c *gin.Context) {
 	// curl -i -X GET http://localhost:8080/api/v1/pi/35000
 }
 
-// pi launches n goroutines to compute an
-// approximation of pi.
+// Simple version
 func pi(n int) float64 {
-	ch := make(chan float64)
-	defer close(ch)
-
-	for k := 0; k <= n; k++ {
-		go term(ch, float64(k))
-	}
 	f := 0.0
 	for k := 0; k <= n; k++ {
-		f += <-ch
+		f += 4 * math.Pow(-1, float64(k)) / (2*float64(k) + 1)
 	}
 	return f
 }
-
-func term(ch chan float64, k float64) {
-	ch <- 4 * math.Pow(-1, k) / (2*k + 1)
-}
-
-// Simple version
-// func pi(n int) float64 {
-// 	f := 0.0
-// 	for k := 0; k <= n; k++ {
-// 		f += 4 * math.Pow(-1, float64(k)) / (2*float64(k) + 1)
-// 	}
-// 	return f
-// }
