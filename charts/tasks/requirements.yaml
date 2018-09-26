@@ -1,4 +1,0 @@
-dependencies:
-  - name: postgresql
-    version: 0.18.1
-    repository: file://charts/postgresql

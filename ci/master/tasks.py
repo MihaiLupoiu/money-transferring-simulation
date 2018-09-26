@@ -77,19 +77,19 @@ tasks.addStep(steps.ShellCommand(name="Build Service",
         haltOnFailure=True))
 
 tasks.addStep(steps.ShellCommand(name="Tag new docker image",
-        command=util.renderer(lambda props: ["docker", "tag", "mihailupoiu/tasks:latest", "myhay/tasks:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
+        command=util.renderer(lambda props: ["docker", "tag", "mihailupoiu/tasks:latest", "myhay/tasks:{}".format(props.getProperty('commit-description')['tasks'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
 tasks.addStep(steps.ShellCommand(name="Upload new docker image to dockerhub",
-        command=util.renderer(lambda props: ["docker", "push", "myhay/tasks:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
+        command=util.renderer(lambda props: ["docker", "push", "myhay/tasks:{}".format(props.getProperty('commit-description')['tasks'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
 tasks.addStep(steps.ShellCommand(name="Deploy new docker image in Kubernetes",
-        command=util.renderer(lambda props: ["./services-deploy.sh", "tasks", "{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
+        command=util.renderer(lambda props: ["./services-deploy.sh", "tasks", "{}".format(props.getProperty('commit-description')['tasks'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
