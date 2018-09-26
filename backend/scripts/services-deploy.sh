@@ -10,7 +10,7 @@ serviceRunning=$(helm list -a -q ${serviceName} | wc -l )
     if [ $serviceRunning -eq 0 ]; then
         echo -e "\nHelm install service ${serviceName}"
 
-        helm install --name=${serviceName} --wait --timeout 60 --set image.tag=$tag -- ../charts/${serviceName}
+        helm install --name=${serviceName} --set image.tag=$tag -- ../charts/${serviceName}
         ret=$?
         if [ $ret -ne 0 ]; then
             exit -1
@@ -18,7 +18,7 @@ serviceRunning=$(helm list -a -q ${serviceName} | wc -l )
 
     else
         echo -e "\nHelm upgrading service ${_serviceName}"
-        helm upgrade ${serviceName} --wait --timeout 60 --set image.tag=$tag -- ../charts/${serviceName}
+        helm upgrade ${serviceName} --set image.tag=$tag -- ../charts/${serviceName}
         ret=$?
         if [ $ret -ne 0 ]; then
             exit -1
