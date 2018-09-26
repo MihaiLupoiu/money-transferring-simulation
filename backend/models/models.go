@@ -24,3 +24,12 @@ type Transfer struct {
 	Amount   float64   `gorm:"" form:"amount" json:"amount"`
 	Date     time.Time `gorm:"" form:"date" json:"date"`
 }
+
+type Config struct {
+	Debug    bool
+	User     string
+	Password string
+	Host     string
+	Port     int
+	Database string
+}

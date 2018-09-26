@@ -1,1 +1,1 @@
-{"test": 60}
+{"Debug"  :true, "User" :"postgres","Password" :"CK8nMNq89X", "Host":"postgresql", "Port": 5432, "Database" :"postgres"}

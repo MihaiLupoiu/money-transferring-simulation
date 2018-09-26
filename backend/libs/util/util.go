@@ -1,6 +1,10 @@
 package util
 
 import (
+	"encoding/json"
+	"log"
+	"os"
+
 	"github.com/MihaiLupoiu/money-transferring-simulation/backend/models"
 	"github.com/jinzhu/gorm"
 	_ "github.com/mattn/go-sqlite3"
@@ -28,4 +32,20 @@ func InitDb() *gorm.DB {
 	}
 
 	return db
+}
+
+// GetConfigurationFile parshe json configuration file.
+func GetConfigurationFile(configFile string) models.Config {
+	configuration := models.Config{}
+	file, err := os.Open(configFile)
+	if err != nil {
+		log.Println("error:", err)
+	} else {
+		decoder := json.NewDecoder(file)
+		err := decoder.Decode(&configuration)
+		if err != nil {
+			log.Println("error:", err)
+		}
+	}
+	return configuration
 }
