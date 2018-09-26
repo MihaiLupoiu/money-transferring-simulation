@@ -106,39 +106,36 @@ func PiNumber(c *gin.Context) {
 	if err != nil {
 		c.JSON(404, gin.H{"error": "Invalid number of iterations: " + val})
 	}
-	// POD dies if more than 1000000
-	// if iterations > 200000 {
-	// 	c.JSON(404, gin.H{"error": "Number too big: " + val})
-	// }
 
 	c.JSON(200, gin.H{"success": "Pi is: " + fmt.Sprintf("%.20f", pi(iterations))})
 	// curl -i -X GET http://localhost:8080/api/v1/pi/35000
 }
 
+// pi launches n goroutines to compute an
+// approximation of pi.
 func pi(n int) float64 {
+	ch := make(chan float64)
+	defer close(ch)
+
+	for k := 0; k <= n; k++ {
+		go term(ch, float64(k))
+	}
 	f := 0.0
 	for k := 0; k <= n; k++ {
-		f += 4 * math.Pow(-1, float64(k)) / (2*float64(k) + 1)
+		f += <-ch
 	}
 	return f
 }
 
-// pi launches n goroutines to compute an
-// approximation of pi.
-// func pi(n int) float64 {
-// 	ch := make(chan float64)
-// 	defer close(ch)
+func term(ch chan float64, k float64) {
+	ch <- 4 * math.Pow(-1, k) / (2*k + 1)
+}
 
-// 	for k := 0; k <= n; k++ {
-// 		go term(ch, float64(k))
-// 	}
+// Simple version
+// func pi(n int) float64 {
 // 	f := 0.0
 // 	for k := 0; k <= n; k++ {
-// 		f += <-ch
+// 		f += 4 * math.Pow(-1, float64(k)) / (2*float64(k) + 1)
 // 	}
 // 	return f
-// }
-
-// func term(ch chan float64, k float64) {
-// 	ch <- 4 * math.Pow(-1, k) / (2*k + 1)
 // }
