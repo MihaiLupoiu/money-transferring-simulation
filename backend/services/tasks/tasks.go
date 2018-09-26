@@ -100,7 +100,7 @@ func Kill(c *gin.Context) {
 
 func PiNumber(c *gin.Context) {
 
-	val := c.Params.ByName("iteracions")
+	val := c.Params.ByName("iterations")
 
 	iterations, err := strconv.Atoi(val)
 	if err != nil {
