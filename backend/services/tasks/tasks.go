@@ -78,3 +78,8 @@ func DeleteTask(c *gin.Context) {
 
 	db.Delete(&task)
 }
+
+// curl -i -X GET -H "Content-Type: application/json" http://192.168.99.100:30081/api/v1/tasks/
+// curl -i -X POST -H "Content-Type: application/json" -d "{\"title\": \"test\",\"created_at\": \"2017-11-13T23:03:28-08:00\", \"completed\": false}" http://192.168.99.100:30081/api/v1/tasks/
+// curl -i -X DELETE -H "Content-Type: application/json" http://192.168.99.100:30081/api/v1/tasks/ID
+// curl -i -X PUT -H "Content-Type: application/json" -d "{\"title\": \"test name changed\", \"completed\": true}" http://192.168.99.100:30081/api/v1/tasks/ID
