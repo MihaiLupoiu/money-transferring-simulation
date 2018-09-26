@@ -17,7 +17,7 @@ configMapPath: "config.json"
 
 service:
   containerPort: 8080
-  type: NodePort
+  type: LoadBalancer
   port: 30081
 
 resources: {}

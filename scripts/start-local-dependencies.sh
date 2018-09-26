@@ -1,2 +1,2 @@
 #!/bin/bash
-helm install --name=postgresql ../../charts/postgresql
+helm install --name=postgresql --set postgresPassword="abc123"../../charts/postgresql
