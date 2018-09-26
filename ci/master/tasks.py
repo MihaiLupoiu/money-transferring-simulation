@@ -3,7 +3,7 @@
 from buildbot.plugins import *
 from buildbot.process.properties import WithProperties
 
-money_transferring = util.BuildFactory()
+tasks = util.BuildFactory()
 
 go_env={
         'GOPATH': util.Interpolate('%(prop:builddir)s/go'),
@@ -33,12 +33,12 @@ govet = steps.ShellCommand(name="go vet",
 # ==============================================================================
 
 # check out the source
-money_transferring.addStep(steps.Git(
-    repourl=util.Interpolate("%(src:money-transferring-simulation:repository)s"),
+tasks.addStep(steps.Git(
+    repourl=util.Interpolate("%(src:tasks:repository)s"),
 	mode='incremental',
 	method='clean',
-	branch=util.Interpolate('%(src:money-transferring-simulation:branch)s'),      
-	codebase='money-transferring-simulation',
+	branch=util.Interpolate('%(src:tasks:branch)s'),      
+	codebase='tasks',
 	workdir=basic_workdir,
         getDescription={
         "always":True,
@@ -47,7 +47,7 @@ money_transferring.addStep(steps.Git(
         "abbrev": 8}))
 
 # TODO: Check if already installed
-money_transferring.addStep(steps.ShellCommand(name="Go get dep",
+tasks.addStep(steps.ShellCommand(name="Go get dep",
         command=["go", "get", "-u", "github.com/golang/dep/cmd/dep"],
         env=go_env,
         workdir=basic_workdir,
@@ -55,42 +55,41 @@ money_transferring.addStep(steps.ShellCommand(name="Go get dep",
         flunkOnFailure=False))
 
 # TODO: Check if already installed
-money_transferring.addStep(steps.ShellCommand(name="Go install dep",
+tasks.addStep(steps.ShellCommand(name="Go install dep",
         command=["go", "install", "github.com/golang/dep/cmd/dep"],
         env=go_env,
         workdir=basic_workdir,
         haltOnFailure=False,
         flunkOnFailure=False))
 
-money_transferring.addStep(steps.ShellCommand(name="Ensure backend dependencies",
+tasks.addStep(steps.ShellCommand(name="Ensure backend dependencies",
         command=["dep", "ensure"],
         env=go_env,
         workdir=basic_workdir+'/backend',
         haltOnFailure=True))
 
-money_transferring.addSteps([gofmt, govet])
+tasks.addSteps([gofmt, govet])
 
-money_transferring.addStep(steps.ShellCommand(name="Build Service",
-        command=["./services-build.sh", "users"],
+tasks.addStep(steps.ShellCommand(name="Build Service",
+        command=["./services-build.sh", "tasks"],
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
-money_transferring.addStep(steps.ShellCommand(name="Tag new docker image",
-        command=util.renderer(lambda props: ["docker", "tag", "mihailupoiu/users:latest", "myhay/users:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
+tasks.addStep(steps.ShellCommand(name="Tag new docker image",
+        command=util.renderer(lambda props: ["docker", "tag", "mihailupoiu/tasks:latest", "myhay/tasks:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
-money_transferring.addStep(steps.ShellCommand(name="Upload new docker image to dockerhub",
-        command=util.renderer(lambda props: ["docker", "push", "myhay/users:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
+tasks.addStep(steps.ShellCommand(name="Upload new docker image to dockerhub",
+        command=util.renderer(lambda props: ["docker", "push", "myhay/tasks:{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
 
-money_transferring.addStep(steps.ShellCommand(name="Deploy new docker image in Kubernetes",
-        command=util.renderer(lambda props: ["./services-deploy.sh", "users", "{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
+tasks.addStep(steps.ShellCommand(name="Deploy new docker image in Kubernetes",
+        command=util.renderer(lambda props: ["./services-deploy.sh", "tasks", "{}".format(props.getProperty('commit-description')['money-transferring-simulation'])]), 
         env=go_env,
         workdir=basic_workdir+'/backend/scripts',
         haltOnFailure=True))
-
